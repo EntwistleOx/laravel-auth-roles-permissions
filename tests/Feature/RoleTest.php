@@ -116,6 +116,27 @@ class RoleTest extends TestCase
         $this->assertDatabaseMissing('roles',['id'=> $role->id]);
     }
 
-    #TODO
-    #validate request test
+    /** @test */
+    public function a_role_requires_a_name()
+    {
+        $this->signIn();
+        $attributes = factory(Role::class)->raw(['name' => '']);
+        $this->post('/roles', $attributes)->assertSessionHasErrors('name');
+    }
+
+    /** @test */
+    public function a_role_requires_a_slug()
+    {
+        $this->signIn();
+        $attributes = factory(Role::class)->raw(['slug' => '']);
+        $this->post('/roles', $attributes)->assertSessionHasErrors('slug');
+    }
+
+    /** @test */
+    public function a_role_requires_a_description()
+    {
+        $this->signIn();
+        $attributes = factory(Role::class)->raw(['description' => '']);
+        $this->post('/roles', $attributes)->assertSessionHasErrors('description');
+    }
 }

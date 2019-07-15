@@ -9,24 +9,19 @@
                     Crear Usuarios
                 </div>
                 <div class="card-body">
+
+                    @include('common.errors')
+
                     <form method="POST" action="{{ route('users.store') }}">
                         @csrf
+
+                        @include ('users.form', [
+                            'user' => new App\User
+                        ])
                         <div class="form-group">
-                            <label for="name">Nombre</label>
-                            <input type="text" name="name" class="form-control" aria-describedby="name" placeholder="Nombre">
+                            <label for="password">Contraseña</label>
+                            <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
                         </div>
-                        <div class="form-group">
-                            <label for="name">Usuario</label>
-                            <input type="text" name="username" class="form-control" aria-describedby="username" placeholder="Usuario">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Contraseña</label>
-                            <input type="password" name="password" class="form-control" placeholder="Contraseña">
-                        </div>
-                        <!--div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                        </div-->
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>
                 </div>

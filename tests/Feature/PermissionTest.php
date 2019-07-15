@@ -96,6 +96,27 @@ class PermissionTest extends TestCase
         $this->assertDatabaseMissing('permissions',['id'=> $permission->id]);
     }
 
-    #TODO
-    #validate request test
+    /** @test */
+    public function a_permission_requires_a_name()
+    {
+        $this->signIn();
+        $attributes = factory(Permission::class)->raw(['name' => '']);
+        $this->post('/permissions', $attributes)->assertSessionHasErrors('name');
+    }
+
+    /** @test */
+    public function a_permission_requires_a_slug()
+    {
+        $this->signIn();
+        $attributes = factory(Permission::class)->raw(['slug' => '']);
+        $this->post('/permissions', $attributes)->assertSessionHasErrors('slug');
+    }
+
+    /** @test */
+    public function a_permission_requires_a_description()
+    {
+        $this->signIn();
+        $attributes = factory(Permission::class)->raw(['description' => '']);
+        $this->post('/permissions', $attributes)->assertSessionHasErrors('description');
+    }
 }

@@ -37,8 +37,10 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        Role::create($request->toArray());
-        return redirect()->route('roles.index');
+        #dd($request);
+        $attributes = $this->validateRequest();
+        $role = Role::create($attributes);
+        return redirect()->route('roles.edit', $role->id)->with('status', 'Rol creado!');
     }
 
     /**
@@ -74,19 +76,14 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $attributes = [
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'description' => $request->description,
-            'special' => $request->special == 1 ? null : $request->special
-        ];
+        $attributes = $this->validateRequest();
 
         $role->update($attributes);
 
         //Asignar Permisos
         $role->syncPermissions($request->get('permission'));
 
-        return redirect()->route('roles.edit', $role->id);
+        return redirect()->route('roles.edit', $role->id)->with('status', 'Rol actualizado!');
     }
 
     /**
@@ -99,10 +96,17 @@ class RoleController extends Controller
     {
         $role->delete();
 
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.index')->with('status', 'Rol eliminado!');
     }
 
-    #TODO
-    #validate request form
-    #validate select on null
+    protected function validateRequest()
+    {
+        $attributes = request()->validate([
+            'name' => 'required',
+            'slug' => 'required',
+            'description' => 'required',
+            'special' => 'nullable'
+        ]);
+        return $attributes;
+    }
 }

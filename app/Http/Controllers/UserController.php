@@ -38,13 +38,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = [
-            'name' => $request->name,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-        ];
-        User::create($user);
-        return redirect()->route('users.index');
+        $this->validateRequest();
+
+        $user = new User;
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+        return redirect()->route('users.edit', $user->id)->with('status', 'Usuario creado!');
     }
 
     /**
@@ -80,19 +82,22 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $attributes = [
-            'name' => $request->name,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-        ];
+        $this->validateRequest();
 
-        //Actualizar Usuario
-        $user->update($attributes);
+        $user->name = $request->name;
+        $user->username = $request->username;
+
+        if(!empty($request->password))
+        {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
 
         //Asignar Roles
         $user->syncRoles($request->get('role'));
 
-        return redirect()->route('users.edit', $user->id);
+        return redirect()->route('users.edit', $user->id)->with('status', 'Usuario actualizado!');
     }
 
     /**
@@ -104,7 +109,15 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+        return redirect()->route('users.index')->with('status', 'Usuario eliminado!');
+    }
 
-        return redirect()->route('users.index');
+    protected function validateRequest()
+    {
+        $attributes = request()->validate([
+            'name' => 'required',
+            'username' => 'required',
+        ]);
+        return $attributes;
     }
 }

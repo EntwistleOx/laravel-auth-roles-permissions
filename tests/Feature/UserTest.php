@@ -132,6 +132,27 @@ class UserTest extends TestCase
         $this->assertDatabaseMissing('users',['id'=> $user->id]);
     }
 
-    #TODO
-    #validate request test
+    /** @test */
+    public function a_user_requires_a_name()
+    {
+        $this->signIn();
+        $attributes = factory(User::class)->raw(['name' => '']);
+        $this->post('/users', $attributes)->assertSessionHasErrors('name');
+    }
+
+    /** @test */
+    public function a_user_requires_a_username()
+    {
+        $this->signIn();
+        $attributes = factory(User::class)->raw(['username' => '']);
+        $this->post('/users', $attributes)->assertSessionHasErrors('username');
+    }
+
+    /** @test */
+    public function a_user_requires_a_password()
+    {
+        $this->signIn();
+        $attributes = factory(User::class)->raw(['password' => '']);
+        $this->post('/users', $attributes)->assertSessionHasErrors('password');
+    }
 }

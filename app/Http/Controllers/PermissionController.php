@@ -36,8 +36,9 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        Permission::create($request->toArray());
-        return redirect()->route('permissions.index');
+        $attributes = $this->validateRequest();
+        $permission = Permission::create($attributes);
+        return redirect()->route('permissions.edit', $permission->id)->with('status', 'Permiso creado!');
     }
 
     /**
@@ -71,15 +72,11 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
-        $attributes = [
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'description' => $request->description
-        ];
+        $attributes = $this->validateRequest();
 
         $permission->update($attributes);
 
-        return redirect()->route('permissions.index');
+        return redirect()->route('permissions.edit', $permission->id)->with('status', 'Permiso actualizado!');
     }
 
     /**
@@ -92,6 +89,16 @@ class PermissionController extends Controller
     {
         $permission->delete();
 
-        return redirect()->route('permissions.index');
+        return redirect()->route('permissions.index')->with('status', 'Permiso eliminado!');
+    }
+
+    protected function validateRequest()
+    {
+        $attributes = request()->validate([
+            'name' => 'required',
+            'slug' => 'required',
+            'description' => 'required'
+        ]);
+        return $attributes;
     }
 }

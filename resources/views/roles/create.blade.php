@@ -9,28 +9,15 @@
                     Crear Rol
                 </div>
                 <div class="card-body">
+
+                    @include('common.errors')
+
                     <form method="POST" action="{{ route('roles.store') }}">
                         @csrf
-                        <div class="form-group">
-                            <label for="name">Nombre</label>
-                            <input type="text" name="name" class="form-control" aria-describedby="name" placeholder="Nombre">
-                        </div>
-                        <div class="form-group">
-                            <label for="slug">Slug</label>
-                            <input type="text" name="slug" class="form-control" aria-describedby="slug" placeholder="Slug">
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <input type="text" name="description" class="form-control" aria-describedby="description" placeholder="Description">
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Acceso</label>
-                            <select class="custom-select mr-sm-2" name="special">
-                                    <option selected>Elije...</option>
-                                    <option value="all-access">Total</option>
-                                    <option value="no-access">Denegado</option>
-                            </select>
-                        </div>
+                        @include ('roles.form', [
+                            'role' => new Caffeinated\Shinobi\Models\Role
+                        ])
+
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>
                 </div>

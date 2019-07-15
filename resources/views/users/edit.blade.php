@@ -9,21 +9,19 @@
                     Editar Usuario
                 </div>
                 <div class="card-body">
+
+                    @include('common.errors')
+                    @include('common.confirmation')
+
+                    <div class="mb-2">
+                        <b>Informacion del usuario</b>
+                    </div>
+
                     <form method="POST" action="{{ route('users.update',$user->id) }}">
                         @csrf
                         @method('PATCH')
-                        <div class="form-group">
-                            <label for="name">Nombre</label>
-                            <input type="text" name="name" class="form-control" aria-describedby="name" placeholder="Nombre" value="{{ $user->name }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Usuario</label>
-                            <input type="text" name="username" class="form-control" aria-describedby="username" placeholder="Usuario" value="{{ $user->username }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Contraseña</label>
-                            <input type="password" name="password" class="form-control" placeholder="Contraseña" value="{{ $user->password }}">
-                        </div>
+
+                        @include ('users.form')
 
                         <hr>
 
@@ -47,6 +45,24 @@
                         @endforeach
 
                         <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+
+                    <hr>
+
+                    <div class="mb-2">
+                        <b>Cambiar password</b>
+                    </div>
+
+                    <form action="">
+                        <div class="form-group">
+                            <label for="name">Nuevo password</label>
+                            <input type="password" name="password" class="form-control" aria-describedby="name" placeholder="Password" required >
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Confirmar password</label>
+                            <input type="password" name="passwordConfirm" class="form-control" aria-describedby="username" placeholder="Confirmar password" required >
+                        </div>
+                        <button type="submit" class="btn btn-danger">Cambiar</button>
                     </form>
                 </div>
             </div>

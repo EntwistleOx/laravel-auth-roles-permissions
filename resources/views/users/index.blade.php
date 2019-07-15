@@ -13,6 +13,8 @@
                 </div>
                 <div class="card-body">
 
+                    @include('common.confirmation')
+
                         <table class="table table-hover table-sm">
                             <thead>
                                 <tr>
