@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('users/{user}', 'UserController@show')->name('users.show');
     Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit');
     Route::patch('users/{user}', 'UserController@update')->name('users.update');
+    Route::patch('users/{user}/password', 'UserController@updatePassword')->name('users.password');
     Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy');
 
     // #Roles

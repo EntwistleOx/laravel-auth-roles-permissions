@@ -77,12 +77,9 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $attributes = $this->validateRequest();
-
         $role->update($attributes);
-
         //Asignar Permisos
         $role->syncPermissions($request->get('permission'));
-
         return redirect()->route('roles.edit', $role->id)->with('status', 'Rol actualizado!');
     }
 
@@ -95,7 +92,6 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         $role->delete();
-
         return redirect()->route('roles.index')->with('status', 'Rol eliminado!');
     }
 

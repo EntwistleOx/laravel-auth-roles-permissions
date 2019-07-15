@@ -39,12 +39,10 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validateRequest();
-
         $user = new User;
         $user->name = $request->name;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
-
         $user->save();
         return redirect()->route('users.edit', $user->id)->with('status', 'Usuario creado!');
     }
@@ -82,21 +80,15 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $this->validateRequest();
+        $attributes = $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+        ]);
 
-        $user->name = $request->name;
-        $user->username = $request->username;
-
-        if(!empty($request->password))
-        {
-            $user->password = Hash::make($request->password);
-        }
-
-        $user->save();
+        $user->update($attributes);
 
         //Asignar Roles
         $user->syncRoles($request->get('role'));
-
         return redirect()->route('users.edit', $user->id)->with('status', 'Usuario actualizado!');
     }
 
@@ -117,7 +109,15 @@ class UserController extends Controller
         $attributes = request()->validate([
             'name' => 'required',
             'username' => 'required',
+            'password' => 'required',
         ]);
         return $attributes;
+    }
+
+    public function updatePassword(Request $request, User $user)
+    {
+        $user->update([
+            'password' => $request->password
+        ]);
     }
 }

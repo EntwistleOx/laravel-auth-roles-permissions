@@ -96,8 +96,7 @@ class UserTest extends TestCase
 
         $attributes = [
             'name' => 'changed',
-            'username' => 'changed',
-            'password' => 'changed'
+            'username' => 'changed'
         ];
 
         $this->patch('users/'.$user->id, $attributes);
@@ -141,7 +140,7 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function a_user_requires_a_username()
+    public function a_user_requires_an_username()
     {
         $this->signIn();
         $attributes = factory(User::class)->raw(['username' => '']);
@@ -154,5 +153,21 @@ class UserTest extends TestCase
         $this->signIn();
         $attributes = factory(User::class)->raw(['password' => '']);
         $this->post('/users', $attributes)->assertSessionHasErrors('password');
+    }
+
+    /** @test */
+    public function a_password_may_be_updated()
+    {
+        $this->signIn();
+        $user = factory(User::class)->create();
+
+        $newPass = [
+            'password' => 'changed',
+        ];
+
+        $this->patch('users/'.$user->id.'/password', $newPass);
+
+        $this->assertDatabaseHas('users', $newPass);
+
     }
 }

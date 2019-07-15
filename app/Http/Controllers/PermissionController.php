@@ -73,9 +73,7 @@ class PermissionController extends Controller
     public function update(Request $request, Permission $permission)
     {
         $attributes = $this->validateRequest();
-
         $permission->update($attributes);
-
         return redirect()->route('permissions.edit', $permission->id)->with('status', 'Permiso actualizado!');
     }
 
@@ -88,7 +86,6 @@ class PermissionController extends Controller
     public function destroy(Permission $permission)
     {
         $permission->delete();
-
         return redirect()->route('permissions.index')->with('status', 'Permiso eliminado!');
     }
 
