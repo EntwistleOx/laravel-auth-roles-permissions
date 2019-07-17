@@ -53,14 +53,16 @@
                         <b>Cambiar password</b>
                     </div>
 
-                    <form action="">
+                    <form method="POST" action="{{ route('users.password', $user->id) }}">
+                        @csrf
+                        @method('PATCH')
                         <div class="form-group">
                             <label for="name">Nuevo password</label>
-                            <input type="password" name="password" class="form-control" aria-describedby="name" placeholder="Password" required >
+                            <input type="password" name="password" class="form-control" aria-describedby="password" placeholder="Password" required >
                         </div>
                         <div class="form-group">
                             <label for="name">Confirmar password</label>
-                            <input type="password" name="passwordConfirm" class="form-control" aria-describedby="username" placeholder="Confirmar password" required >
+                            <input type="password" name="password_confirmation" class="form-control" aria-describedby="password_confirmation " placeholder="Confirmar password" required >
                         </div>
                         <button type="submit" class="btn btn-danger">Cambiar</button>
                     </form>

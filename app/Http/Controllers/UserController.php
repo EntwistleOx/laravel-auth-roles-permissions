@@ -108,7 +108,7 @@ class UserController extends Controller
     {
         $attributes = request()->validate([
             'name' => 'required',
-            'username' => 'required',
+            'username' => 'required|unique:users',
             'password' => 'required',
         ]);
         return $attributes;
@@ -116,8 +116,13 @@ class UserController extends Controller
 
     public function updatePassword(Request $request, User $user)
     {
-        $user->update([
-            'password' => $request->password
+        $attributes = $request->validate([
+            'password' => 'required|confirmed'
         ]);
+
+        $user->update([
+            'password' => Hash::make($attributes['password'])
+        ]);
+        return redirect()->route('users.edit', $user->id)->with('status', 'Password actualizada!');
     }
 }
