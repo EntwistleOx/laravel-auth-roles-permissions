@@ -19,10 +19,11 @@
             <h3 class="box-title">Crear un Usuarios</h3>
         </div>
 
-        @include('common.errors')
-
         <form method="POST" action="{{ route('users.store') }}">
             <div class="box-body">
+
+            @include('common.errors')
+
             @csrf
 
             @include ('users.form', [
