@@ -1,64 +1,84 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    Usuarios
-                    @can('users.create')
-                        <a href="{{route('users.create')}}" class="btn btn-primary">Crear</a>
-                    @endcan
-                </div>
-                <div class="card-body">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Usuarios
+        <small>it all starts here</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Examples</a></li>
+        <li class="active">Blank page</li>
+      </ol>
+    </section>
 
-                    @include('common.confirmation')
+    <!-- Main content -->
+    <section class="content">
 
-                        <table class="table table-hover table-sm">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Username</th>
-                                    <th>Rol</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($users as $user)
-                                <tr>
-                                    <td>{{ $user->id }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->username }}</td>
-                                    <td>
-                                        @foreach($user->roles as $roles => $name)
-                                            <span class="badge badge-warning">{{  $name->name  }}</span>
-                                        @endforeach
-                                    </td>
-                                    <td class="d-flex justify-content-around">
-                                        @can('users.edit')
-                                        <a class="btn btn-success" href="{{route('users.edit',$user->id)}}">Editar</a>
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Lista de Usuarios</h3>
 
-                                        @endcan
-
-                                        @can('users.destroy')
-                                        <form action="{{route('users.destroy',$user->id)}}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn bg-danger text-white" type="submit" onclick="return confirm('¿Desea eliminar el registro?')">Eliminar</button>
-                                        </form>
-                                        @endcan
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        {{ $users->links() }}
-                </div>
-
-            </div>
+          <div class="box-tools pull-right">
+                <a href="{{route('users.create')}}" class="btn btn-primary btn-sm">Crear</a>
+          </div>
         </div>
-    </div>
-</div>
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Username</th>
+                        <th>Rol</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($users as $user)
+                    <tr>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->username }}</td>
+                        <td>
+                            @foreach($user->roles as $roles => $name)
+                                <span class="label label-warning">{{  $name->name  }}</span>
+                            @endforeach
+                        </td>
+                        <td>
+                            <a class="btn btn-success btn-xs" href="{{route('users.edit',$user->id)}}">Editar</a>
+                        </td>
+                        <td>
+                            <form action="{{route('users.destroy',$user->id)}}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-xs" type="submit" onclick="return confirm('¿Desea eliminar el registro?')">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            {{ $users->links() }}
+        </div>
+        <!-- /.box-footer-->
+      </div>
+      <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
 @endsection
+
+
