@@ -1,28 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    Crear Rol
-                </div>
-                <div class="card-body">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>Roles<small>it all starts here</small></h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Examples</a></li>
+        <li class="active">Blank page</li>
+    </ol>
+</section>
 
-                    @include('common.errors')
+<!-- Main content -->
+<section class="content">
+        <!-- Default box -->
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Crear Roles</h3>
+            </div>
 
-                    <form method="POST" action="{{ route('roles.store') }}">
-                        @csrf
-                        @include ('roles.form', [
+            <form method="POST" action="{{ route('roles.store') }}">
+                <div class="box-body">
+
+                @include('common.errors')
+
+                @csrf
+
+                @include ('roles.form', [
                             'role' => new Caffeinated\Shinobi\Models\Role
                         ])
-
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </form>
                 </div>
-            </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+                <!-- /.box-footer-->
+            </form>
+            <!-- /.form-->
         </div>
-    </div>
-</div>
+        <!-- /.box -->
+    </section>
+    <!-- /.content -->
 @endsection
