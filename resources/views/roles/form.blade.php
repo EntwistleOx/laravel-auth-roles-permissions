@@ -11,8 +11,8 @@
     <input type="text" name="description" class="form-control" aria-describedby="description" placeholder="Description" value="{{ $role->description }}" >
 </div>
 <div class="form-group">
-    <label for="name">Acceso</label>
-    <select class="custom-select mr-sm-2" name="special">
+    <label for="access">Acceso</label>
+    <select class="form-control" name="special">
             <option value="" selected>Elije...</option>
             <option value="all-access" {{ ( $role->special == 'all-access') ? 'selected' : '' }}>Total</option>
             <option value="no-access" {{ ( $role->special == 'no-access') ? 'selected' : '' }}>Denegado</option>
