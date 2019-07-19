@@ -10,4 +10,3 @@
     <label for="description">Description</label>
     <input type="text" name="description" class="form-control" aria-describedby="description" placeholder="Description" value="{{ $permission->description }}" required>
 </div>
-<button type="submit" class="btn btn-primary">Guardar</button>

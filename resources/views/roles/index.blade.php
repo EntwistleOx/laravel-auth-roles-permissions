@@ -20,7 +20,9 @@
             <h3 class="box-title">Listado de Roles</h3>
 
             <div class="box-tools pull-right">
-                <a href="{{route('roles.create')}}" class="btn btn-primary btn-sm">Crear</a>
+                @can('roles.create')
+                    <a href="{{route('roles.create')}}" class="btn btn-primary btn-sm">Crear</a>
+                @endcan
             </div>
           </div>
           <div class="box-body table-responsive no-padding">
@@ -45,14 +47,18 @@
                             <td>{{ $role->description }}</td>
                             <td><span class="label label-warning">{{ $role->special }}</span></td>
                             <td>
-                                <a class="btn btn-success btn-xs" href="{{route('roles.edit',$role->id)}}">Editar</a>
+                                @can('roles.edit')
+                                    <a class="btn btn-success btn-xs" href="{{route('roles.edit',$role->id)}}">Editar</a>
+                                @endcan
                             </td>
                             <td>
-                            <form action="{{route('roles.destroy',$role->id)}}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger btn-xs" type="submit" onclick="return confirm('¿Desea eliminar el registro?')">Eliminar</button>
-                            </form>
+                                @can('roles.destroy')
+                                    <form action="{{route('roles.destroy',$role->id)}}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-xs" type="submit" onclick="return confirm('¿Desea eliminar el registro?')">Eliminar</button>
+                                    </form>
+                                @endcan
                             </td>
                         </tr>
                         @endforeach

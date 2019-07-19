@@ -218,34 +218,47 @@ html {
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MENU</li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Administracion</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{ route('users.index') }}"><i class="fa fa-circle-o"></i> Usuarios</a></li>
-            <li><a href="{{ route('roles.index') }}"><i class="fa fa-circle-o"></i> Roles</a></li>
-            <li><a href="{{ route('permissions.index') }}"><i class="fa fa-circle-o"></i> Permisos</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-files-o"></i>
-            <span>Campañas</span>
-            <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> Navigation</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Boxed</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Fixed</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-          </ul>
-        </li>
+        @can('administration.index')
+            <li class="treeview">
+            <a href="#">
+                <i class="fa fa-dashboard"></i> <span>Administracion</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                @can('users.index')
+                    <li><a href="{{ route('users.index') }}"><i class="fa fa-circle-o"></i> Usuarios</a></li>
+                @endcan
+
+                @can('users.index')
+                    <li><a href="{{ route('roles.index') }}"><i class="fa fa-circle-o"></i> Roles</a></li>
+                @endcan
+
+                @can('users.index')
+                    <li><a href="{{ route('permissions.index') }}"><i class="fa fa-circle-o"></i> Permisos</a></li>
+                @endcan
+            </ul>
+            </li>
+        @endcan
+        @can('campaings.index')
+            <li class="treeview">
+            <a href="#">
+                <i class="fa fa-files-o"></i>
+                <span>Campañas</span>
+                <span class="pull-right-container">
+                <span class="label label-primary pull-right">4</span>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="#"><i class="fa fa-circle-o"></i> Navigation</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Boxed</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Fixed</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
+            </ul>
+            </li>
+        @endcan
+        @can('recordings.index')
         <li>
           <a href="#">
             <i class="fa fa-file-audio-o"></i> <span>Grabaciones</span>
@@ -254,51 +267,58 @@ html {
             </span>
           </a>
         </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>Reportes</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Morris</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Flot</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Inline charts</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-laptop"></i>
-            <span>Monitores</span>
-            <span class="pull-right-container">
-                <small class="label pull-right bg-yellow">12</small>
-                <small class="label pull-right bg-green">16</small>
-                <small class="label pull-right bg-red">5</small>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> General</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Icons</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Buttons</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Sliders</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-phone-square"></i> <span>Aplicacion</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> General Elements</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Editors</a></li>
-          </ul>
-        </li>
+        @endcan
+        @can('reports.index')
+            <li class="treeview">
+            <a href="#">
+                <i class="fa fa-pie-chart"></i>
+                <span>Reportes</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="#"><i class="fa fa-circle-o"></i> ChartJS</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Morris</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Flot</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Inline charts</a></li>
+            </ul>
+            </li>
+        @endcan
+        @can('monitors.index')
+            <li class="treeview">
+            <a href="#">
+                <i class="fa fa-laptop"></i>
+                <span>Monitores</span>
+                <span class="pull-right-container">
+                    <small class="label pull-right bg-yellow">12</small>
+                    <small class="label pull-right bg-green">16</small>
+                    <small class="label pull-right bg-red">5</small>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="#"><i class="fa fa-circle-o"></i> General</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Icons</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Buttons</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Sliders</a></li>
+            </ul>
+            </li>
+        @endcan
+        @can('app.index')
+            <li class="treeview">
+            <a href="#">
+                <i class="fa fa-phone-square"></i> <span>Aplicacion</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="#"><i class="fa fa-circle-o"></i> General Elements</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Editors</a></li>
+            </ul>
+            </li>
+        @endcan
       </ul>
     </section>
     <!-- /.sidebar -->

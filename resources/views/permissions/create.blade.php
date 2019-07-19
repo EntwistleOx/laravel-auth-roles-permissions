@@ -26,7 +26,6 @@
                     @include ('permissions.form', [
                         'permission' => new Caffeinated\Shinobi\Models\Permission
                     ])
-            </form>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">

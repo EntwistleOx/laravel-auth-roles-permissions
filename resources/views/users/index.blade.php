@@ -20,7 +20,9 @@
           <h3 class="box-title">Lista de Usuarios</h3>
 
           <div class="box-tools pull-right">
+              @can('users.create')
                 <a href="{{route('users.create')}}" class="btn btn-primary btn-sm">Crear</a>
+              @endcan
           </div>
         </div>
         <div class="box-body table-responsive no-padding">
@@ -47,14 +49,18 @@
                             @endforeach
                         </td>
                         <td>
-                            <a class="btn btn-success btn-xs" href="{{route('users.edit',$user->id)}}">Editar</a>
+                            @can('users.edit')
+                                <a class="btn btn-success btn-xs" href="{{route('users.edit',$user->id)}}">Editar</a>
+                            @endcan
                         </td>
                         <td>
-                            <form action="{{route('users.destroy',$user->id)}}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger btn-xs" type="submit" onclick="return confirm('¿Desea eliminar el registro?')">Eliminar</button>
-                            </form>
+                            @can('users.destroy')
+                                <form action="{{route('users.destroy',$user->id)}}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-xs" type="submit" onclick="return confirm('¿Desea eliminar el registro?')">Eliminar</button>
+                                </form>
+                            @endcan
                         </td>
                     </tr>
                     @endforeach
