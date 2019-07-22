@@ -30,7 +30,6 @@ Route::get('/', function () {
     // Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit')->middleware('can:users.edit');
     // Route::put('users/{user}', 'UserController@update')->name('users.update')->middleware('can:users.edit');
     // Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy')->middleware('can:users.destroy');
-
     Route::get('users', 'UserController@index')->name('users.index');
     Route::get('users/create', 'UserController@create')->name('users.create');
     Route::post('users', 'UserController@store')->name('users.store');

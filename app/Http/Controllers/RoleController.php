@@ -64,11 +64,11 @@ class RoleController extends Controller
     {
         $rolePermissions = $role->permissions;
 
-        #if(auth()->user()->hasRole('superadmin')){
+        if(auth()->user()->hasRole('superadmin')){
             $permissions = Permission::all();
-        #}else{
-        #    $permissions = Permission::all()->whereNotIn('slug', ['permissions.create', 'permissions.show', 'permissions.edit', 'permissions.destroy'])->all();
-        #}
+        }else{
+            $permissions = Permission::all()->whereNotIn('slug', ['permissions.create', 'permissions.show', 'permissions.edit', 'permissions.destroy'])->all();
+        }
 
         return view('roles.edit', compact(['role','permissions','rolePermissions']));
     }
