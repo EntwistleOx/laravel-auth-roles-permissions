@@ -217,14 +217,10 @@ html {
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
 
-      @if (Gate::check('administration.index'))
-        SI
-      @endif
-
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MENU</li>
 
-        @if (Gate::check('administration.index'))
+        @can('administration.index')
             <li class="treeview">
             <a href="#">
                 <i class="fa fa-dashboard"></i> <span>Administracion</span>
@@ -233,21 +229,21 @@ html {
                 </span>
             </a>
             <ul class="treeview-menu">
-                @if (Gate::check('users.index'))
+                @can('users.index')
                     <li><a href="{{ route('users.index') }}"><i class="fa fa-circle-o"></i> Usuarios</a></li>
-                @endif
+                @endcan
 
-                @if (Gate::check('users.index'))
+                @can('users.index')
                     <li><a href="{{ route('roles.index') }}"><i class="fa fa-circle-o"></i> Roles</a></li>
-                @endif
+                @endcan
 
-                @if (Gate::check('users.index'))
+                @can('users.index')
                     <li><a href="{{ route('permissions.index') }}"><i class="fa fa-circle-o"></i> Permisos</a></li>
-                @endif
+                @endcan
             </ul>
             </li>
-        @endif
-        @if (Gate::check('campaings.index'))
+        @endcan
+        @can('campaings.index')
             <li class="treeview">
             <a href="#">
                 <i class="fa fa-files-o"></i>
@@ -263,8 +259,8 @@ html {
                 <li><a href="#"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
             </ul>
             </li>
-        @endif
-        @if (Gate::check('recordings.index'))
+        @endcan
+        @can('recordings.index')
         <li>
           <a href="#">
             <i class="fa fa-file-audio-o"></i> <span>Grabaciones</span>
@@ -273,8 +269,8 @@ html {
             </span>
           </a>
         </li>
-        @endif
-        @if (Gate::check('reports.index'))
+        @endcan
+        @can('reports.index')
             <li class="treeview">
             <a href="#">
                 <i class="fa fa-pie-chart"></i>
@@ -290,8 +286,8 @@ html {
                 <li><a href="#"><i class="fa fa-circle-o"></i> Inline charts</a></li>
             </ul>
             </li>
-        @endif
-        @if (Gate::check('monitors.index'))
+        @endcan
+        @can('monitors.index')
             <li class="treeview">
             <a href="#">
                 <i class="fa fa-laptop"></i>
@@ -309,8 +305,8 @@ html {
                 <li><a href="#"><i class="fa fa-circle-o"></i> Sliders</a></li>
             </ul>
             </li>
-        @endif
-        @if (Gate::check('app.index'))
+        @endcan
+        @can('app.index')
             <li class="treeview">
             <a href="#">
                 <i class="fa fa-phone-square"></i> <span>Aplicacion</span>
@@ -324,7 +320,7 @@ html {
                 <li><a href="#"><i class="fa fa-circle-o"></i> Editors</a></li>
             </ul>
             </li>
-        @endif
+        @endcan
       </ul>
     </section>
     <!-- /.sidebar -->
