@@ -16,7 +16,7 @@
     <!-- Default box -->
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Crear Roles</h3>
+            <h3 class="box-title">Editar Roles</h3>
         </div>
 
         <form method="POST" action="{{ route('roles.update',$role->id) }}">

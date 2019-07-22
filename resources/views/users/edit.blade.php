@@ -15,7 +15,7 @@
 <section class="content">
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Informacion del usuario</h3>
+            <h3 class="box-title">Editar Informacion del usuario</h3>
         </div>
         <!-- /.box-header -->
         <form method="POST" action="{{ route('users.update',$user->id) }}">

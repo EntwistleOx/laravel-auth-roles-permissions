@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\User;
 use Tests\TestCase;
 use Caffeinated\Shinobi\Models\Role;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -73,7 +74,7 @@ class UserTest extends TestCase
     /** @test */
     public function auth_user_can_see_users_edit_form()
     {
-        $this->withoutExceptionHandling();
+        #$this->withoutExceptionHandling();
         $this->signIn();
         $user = factory(User::class)->create();
         $role = factory(Role::class)->create();
@@ -88,9 +89,9 @@ class UserTest extends TestCase
     /** @test */
     public function auth_user_can_update_an_user()
     {
-        $this->withoutExceptionHandling();
+        #$this->withoutExceptionHandling();
 
-        $this->signIn();
+        $auth = $this->signIn();
 
         $user = factory(User::class)->create();
 
@@ -158,16 +159,20 @@ class UserTest extends TestCase
     /** @test */
     public function a_password_may_be_updated()
     {
+        $this->withoutExceptionHandling();
         $this->signIn();
         $user = factory(User::class)->create();
 
-        $newPass = [
-            'password' => 'changed',
+        $newPassword = 'changed';
+
+        $attributes = [
+            'password' => $newPassword,
+            'password_confirmation' => $newPassword
         ];
 
-        $this->patch('users/'.$user->id.'/password', $newPass);
+        $this->patch('users/'.$user->id.'/password', $attributes);
 
-        $this->assertDatabaseHas('users', $newPass);
-
+        #dd($user->password);
+        $this->assertTrue(\Hash::check($newPassword, $user->fresh()->password));
     }
 }

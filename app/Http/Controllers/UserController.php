@@ -121,8 +121,9 @@ class UserController extends Controller
         ]);
 
         $user->update([
-            'password' => Hash::make($attributes['password'])
+            'password' => Hash::make($request->password)
         ]);
+
         return redirect()->route('users.edit', $user->id)->with('status', 'Password actualizada!');
     }
 }

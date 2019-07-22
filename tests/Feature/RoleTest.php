@@ -77,7 +77,7 @@ class RoleTest extends TestCase
     /** @test */
     public function auth_user_can_update_a_role()
     {
-        $this->withoutExceptionHandling();
+        #$this->withoutExceptionHandling();
 
         $this->signIn();
 
