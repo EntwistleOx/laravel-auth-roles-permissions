@@ -39,20 +39,20 @@
 
             <div class="box-body">
                 @foreach ($permissions as $permission)
-                <div class="checkbox">
-                    <label class="form-check-label">
-                        <input
-                            type="checkbox"
-                            class="form-check-input"
-                            name="permission[]"
-                            value="{{ $permission->slug }}"
-                            @foreach($rolePermissions as $index)
-                            {{ ($index->name == $permission->name) ? 'checked' : '' }}
-                            @endforeach
-                        >
-                        {{ $permission->name }}
-                    </label>
-                </div>
+                        <div class="checkbox">
+                            <label class="form-check-label">
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    name="permission[]"
+                                    value="{{ $permission->slug }}"
+                                    @foreach($rolePermissions as $index)
+                                    {{ ($index->name == $permission->name) ? 'checked' : '' }}
+                                    @endforeach
+                                >
+                                {{ $permission->name }}
+                            </label>
+                        </div>
                 @endforeach
             </div>
             <!-- /.box-body -->

@@ -14,9 +14,9 @@ class PermissionsTableSeeder extends Seeder
     {
         # Boton menu
         Permission::create([
-            'name' => 'Boton administracion',
-            'slug' => 'admin.nav-item',
-            'description' => 'Boton administracion del menu',
+            'name' => 'Navegar administracion',
+            'slug' => 'administration.index',
+            'description' => 'Navegar panel de administracion',
         ]);
 
         # Usuarios
