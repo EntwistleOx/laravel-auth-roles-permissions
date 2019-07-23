@@ -233,11 +233,11 @@ html {
                     <li><a href="{{ route('users.index') }}"><i class="fa fa-circle-o"></i> Usuarios</a></li>
                 @endcan
 
-                @can('users.index')
+                @can('roles.index')
                     <li><a href="{{ route('roles.index') }}"><i class="fa fa-circle-o"></i> Roles</a></li>
                 @endcan
 
-                @can('users.index')
+                @can('permissions.index')
                     <li><a href="{{ route('permissions.index') }}"><i class="fa fa-circle-o"></i> Permisos</a></li>
                 @endcan
             </ul>
