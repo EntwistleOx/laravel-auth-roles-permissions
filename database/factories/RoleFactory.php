@@ -8,7 +8,7 @@ use Caffeinated\Shinobi\Models\Role;
 $factory->define(Role::class, function (Faker $faker) {
     return [
         'name' => $faker->word,
-        'slug' => $faker->slug,
+        'slug' => $faker->slug(2),
         'description' => $faker->sentence,
         'special' => null
     ];

@@ -14,10 +14,10 @@ class RoleTest extends TestCase
     #use WithoutMiddleware;
 
     /** @test */
-    public function auth_user_can_list_all_roles()
+    public function only_auth_user_with_proper_access_can_list_all_roles()
     {
         #$this->withoutExceptionHandling();
-        $user = $this->signIn();
+        $this->assignRoleAndPermissionToSignedUser('roles.index');
 
         $roles = factory(Role::class)->create();
 

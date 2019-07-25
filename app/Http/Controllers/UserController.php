@@ -38,6 +38,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        #dd($request);
         $this->validateRequest();
         $user = new User;
         $user->name = $request->name;
