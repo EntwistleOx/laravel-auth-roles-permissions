@@ -63,7 +63,7 @@ class UserTest extends TestCase
     /** @test */
     public function only_auth_user_with_proper_access_can_store_an_user()
     {
-        #$this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
         $user = $this->assignRoleAndPermissionToSignedUser('users.store');
         $this->assertTrue($user->hasPermissionTo(['users.store']));
         $name = $this->faker->firstName . ' ' . $this->faker->lastName;
@@ -219,7 +219,6 @@ class UserTest extends TestCase
     /** @test */
     public function a_user_requires_a_name()
     {
-        #$this->withoutExceptionHandling();
         $this->assignRoleAndPermissionToSignedUser('users.store');
         $attributes = factory(User::class)->raw(['name' => '']);
         $this->post('/users/store', $attributes)->assertSessionHasErrors('name');

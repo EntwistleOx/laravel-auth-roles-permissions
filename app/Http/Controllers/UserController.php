@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 use Caffeinated\Shinobi\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,15 +37,15 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        #dd($request);
-        $this->validateRequest();
-        $user = new User;
-        $user->name = $request->name;
-        $user->username = $request->username;
-        $user->password = Hash::make($request->password);
-        $user->save();
+        #$user = new User;
+        #$user->name = $request->name;
+        #$user->username = $request->username;
+        #$user->password = Hash::make($request->password);
+        #$user->save();
+        $request['password'] = Hash::make($request->password);
+        $user = User::create($request->toArray());
         return redirect()->route('users.edit', $user->id)->with('status', 'Usuario creado!');
     }
 
@@ -103,15 +104,5 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect()->route('users.index')->with('status', 'Usuario eliminado!');
-    }
-
-    protected function validateRequest()
-    {
-        $attributes = request()->validate([
-            'name' => 'required',
-            'username' => 'required|unique:users',
-            'password' => 'required',
-        ]);
-        return $attributes;
     }
 }
