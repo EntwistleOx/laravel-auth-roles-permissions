@@ -21,7 +21,7 @@
         <form method="POST" action="{{ route('users.update',$user->id) }}">
         <div class="box-body">
             @include('common.errors')
-            @include('common.confirmation')
+            @include('common.confirmation', ['flag' => 'status'])
 
             @csrf
             @method('PATCH')
@@ -68,6 +68,10 @@
 
         <form method="POST" action="{{ route('password', $user->id) }}">
             <div class="box-body">
+
+                @include('common.errors')
+                @include('common.confirmation', ['flag' => 'status-password'])
+
                 @csrf
                 @method('PATCH')
                 <div class="form-group">

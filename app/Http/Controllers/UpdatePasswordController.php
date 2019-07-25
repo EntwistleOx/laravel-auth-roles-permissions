@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UpdatePasswordController extends Controller
 {
+
     public function update(Request $request, User $user)
     {
         $attributes = $request->validate([
@@ -16,6 +17,6 @@ class UpdatePasswordController extends Controller
         $user->update([
             'password' => Hash::make($request->password)
         ]);
-        return redirect()->route('users.edit', $user->id)->with('status', 'Password actualizada!');
+        return redirect()->route('users.edit', $user->id)->with('status-password', 'Password actualizada!');
     }
 }
