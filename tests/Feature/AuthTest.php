@@ -34,17 +34,14 @@ class AuthTest extends TestCase
         $user = factory(User::class)->create([
             'password' => bcrypt($password = 'correct'),
         ]);
-
         $this->post('/login', [
             'username' => $user->username,
             'password' => $password
         ])->assertRedirect('home');
-
         $this->assertCredentials([
              'username' => $user->username,
              'password' => 'correct'
         ]);
-
         $this->assertAuthenticatedAs($user);
     }
 
@@ -54,17 +51,14 @@ class AuthTest extends TestCase
         $user = factory(User::class)->create([
             'password' => bcrypt('correct'),
         ]);
-
         $this->from('/login')->post('/login', [
             'username' => $user->username,
             'password' => 'incorrect'
         ])->assertRedirect('/login');
-
         $this->assertInvalidCredentials([
              'username' => $user->username,
              'password' => 'incorrect'
         ]);
-
         $this->assertGuest();
     }
 
@@ -72,17 +66,14 @@ class AuthTest extends TestCase
     public function guest_user_cannot_login_with_incorrect_username()
     {
         $user = factory(User::class)->create();
-
         $this->from('/login')->post('/login', [
             'username' => 'invalidUsername',
             'password' => 'password'
         ])->assertRedirect('/login');
-
         $this->assertInvalidCredentials([
               'username' => 'invalidUsername',
               'password' => 'password'
         ]);
-
         $this->assertGuest();
     }
 }

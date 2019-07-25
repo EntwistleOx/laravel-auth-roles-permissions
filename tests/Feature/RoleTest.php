@@ -17,10 +17,9 @@ class RoleTest extends TestCase
     public function only_auth_user_with_proper_access_can_list_all_roles()
     {
         #$this->withoutExceptionHandling();
-        $this->assignRoleAndPermissionToSignedUser('roles.index');
-
+        $user = $this->assignRoleAndPermissionToSignedUser('roles.index');
+        $this->assertTrue($user->hasPermissionTo(['roles.index']));
         $roles = factory(Role::class)->create();
-
         $this->get(route('roles.index'))
              ->assertOk()
              ->assertSee($roles->name)
@@ -30,40 +29,38 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function auth_user_can_see_roles_create_form()
+    public function only_auth_user_with_proper_access_can_see_roles_create_form()
     {
-        $this->signIn();
-
+        $user = $this->assignRoleAndPermissionToSignedUser('roles.create');
+        $this->assertTrue($user->hasPermissionTo(['roles.create']));
         $this->get(route('roles.create'))
              ->assertOk()
              ->assertSee('Crear');
     }
 
     /** @test */
-    public function auth_user_can_create_a_role()
+    public function only_auth_user_with_proper_access_can_create_a_role()
     {
-        $this->withoutExceptionHandling();
-
-        $this->signIn();
-
+        #$this->withoutExceptionHandling();
+        $user = $this->assignRoleAndPermissionToSignedUser('roles.store');
+        $this->assertTrue($user->hasPermissionTo(['roles.store']));
         $attributes = [
             'name' => $this->faker->word,
             'slug' => $this->faker->slug,
             'description' => $this->faker->sentence,
             'special' => null
         ];
-
-        $this->post('roles', $attributes);
-
+        $this->post('roles/store', $attributes);
         $count = Role::all()->count();
-        $this->assertEquals(1,$count);
+        $this->assertEquals(2,$count);
         $this->assertDatabaseHas('roles', $attributes);
     }
 
     /** @test */
-    public function auth_user_can_see_roles_edit_form()
+    public function only_auth_user_with_proper_access_can_see_roles_edit_form()
     {
-        $this->signIn();
+        $user = $this->assignRoleAndPermissionToSignedUser('roles.edit');
+        $this->assertTrue($user->hasPermissionTo(['roles.edit']));
         $role = factory(Role::class)->create();
         $permission = factory(Permission::class)->create();
         $role->syncPermissions($permission->slug);
@@ -75,42 +72,45 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function auth_user_can_update_a_role()
+    public function only_auth_user_with_proper_access_can_update_a_role()
     {
         #$this->withoutExceptionHandling();
 
-        $this->signIn();
-
+        $user = $this->assignRoleAndPermissionToSignedUser('roles.update');
+        $this->assertTrue($user->hasPermissionTo(['roles.update']));
         $role = factory(Role::class)->create();
-
         $attributes = [
             'name' => 'changed',
             'slug' => 'changed',
             'description' => 'changed',
-            'special' => null
         ];
-
         $this->patch('roles/'.$role->id, $attributes);
-
         $this->assertDatabaseHas('roles', $attributes);
     }
 
     /** @test */
-    public function auth_user_can_assign_permissions_to_a_rol()
+    public function only_auth_user_with_proper_access_can_assign_permissions_to_a_rol()
     {
-        $this->withoutExceptionHandling();
-        $this->signIn();
+        #$this->withoutExceptionHandling();
+        $user = $this->assignRoleAndPermissionToSignedUser('roles.update');
+        $this->assertTrue($user->hasPermissionTo(['roles.update']));
         $role = factory(Role::class)->create();
         $permission = factory(Permission::class)->create();
-        $role->syncPermissions($permission->slug);
-        #$response = $role->can($permission->slug);
+        $attributes = [
+            'name' => $role->name,
+            'slug' => $role->name,
+            'description' => $role->description,
+            'permission' => $permission->slug
+        ];
+        $this->patch('roles/'.$role->id, $attributes);
         $this->assertDatabaseHas('permission_role', ['role_id' => $role->id]);
     }
 
     /** @test */
-    public function auth_user_can_delete_a_role()
+    public function only_auth_user_with_proper_access_can_delete_a_role()
     {
-        $this->signIn();
+        $user = $this->assignRoleAndPermissionToSignedUser('roles.destroy');
+        $this->assertTrue($user->hasPermissionTo(['roles.destroy']));
         $role = factory(Role::class)->create();
         $this->delete('roles/'.$role->id);
         $this->assertDatabaseMissing('roles',['id'=> $role->id]);
@@ -119,24 +119,24 @@ class RoleTest extends TestCase
     /** @test */
     public function a_role_requires_a_name()
     {
-        $this->signIn();
+        $this->assignRoleAndPermissionToSignedUser('roles.store');
         $attributes = factory(Role::class)->raw(['name' => '']);
-        $this->post('/roles', $attributes)->assertSessionHasErrors('name');
+        $this->post('/roles/store', $attributes)->assertSessionHasErrors('name');
     }
 
     /** @test */
     public function a_role_requires_a_slug()
     {
-        $this->signIn();
+        $this->assignRoleAndPermissionToSignedUser('roles.store');
         $attributes = factory(Role::class)->raw(['slug' => '']);
-        $this->post('/roles', $attributes)->assertSessionHasErrors('slug');
+        $this->post('/roles/store', $attributes)->assertSessionHasErrors('slug');
     }
 
     /** @test */
     public function a_role_requires_a_description()
     {
-        $this->signIn();
+        $this->assignRoleAndPermissionToSignedUser('roles.store');
         $attributes = factory(Role::class)->raw(['description' => '']);
-        $this->post('/roles', $attributes)->assertSessionHasErrors('description');
+        $this->post('/roles/store', $attributes)->assertSessionHasErrors('description');
     }
 }
