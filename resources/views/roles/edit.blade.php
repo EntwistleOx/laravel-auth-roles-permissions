@@ -23,7 +23,7 @@
             <div class="box-body">
 
             @include('common.errors')
-            @include('common.confirmation')
+            @include('common.confirmation', ['flag' => 'status'])
 
             @csrf
             @method('PATCH')

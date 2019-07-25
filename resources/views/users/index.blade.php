@@ -15,7 +15,7 @@
     <section class="content">
       <!-- Default box -->
       <div class="box">
-            @include('common.confirmation')
+        @include('common.confirmation', ['flag' => 'status'])
         <div class="box-header with-border">
           <h3 class="box-title">Lista de Usuarios</h3>
 

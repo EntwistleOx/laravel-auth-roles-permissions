@@ -21,7 +21,7 @@
             <form method="POST" action="{{ route('permissions.update', $permission->id) }}">
                 <div class="box-body">
                     @include('common.errors')
-                    @include('common.confirmation')
+                    @include('common.confirmation', ['flag' => 'status'])
                     @csrf
                     @method('PATCH')
                     @include ('permissions.form')
