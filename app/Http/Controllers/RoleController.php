@@ -67,7 +67,7 @@ class RoleController extends Controller
         if(auth()->user()->hasRole('superadmin')){
             $permissions = Permission::all();
         }else{
-            $permissions = Permission::all()->whereNotIn('slug', ['permissions.create', 'permissions.show', 'permissions.edit', 'permissions.destroy'])->all();
+            $permissions = Permission::all()->whereNotIn('slug', ['permissions.create', 'permissions.store', 'permissions.show', 'permissions.edit', 'permissions.update', 'permissions.destroy'])->all();
         }
 
         return view('roles.edit', compact(['role','permissions','rolePermissions']));
