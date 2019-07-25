@@ -27,8 +27,14 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         Permission::create([
-            'name' => 'Crear usuarios',
+            'name' => 'Formulario crear usuarios',
             'slug' => 'users.create',
+            'description' => 'Ver formulario de crear usuarios',
+        ]);
+
+        Permission::create([
+            'name' => 'Crear usuarios',
+            'slug' => 'users.store',
             'description' => 'Crear un usuario dentro del sistema',
         ]);
 
@@ -39,8 +45,14 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         Permission::create([
-            'name' => 'Editar usuarios',
+            'name' => 'Formulario editar usuarios',
             'slug' => 'users.edit',
+            'description' => 'Ver formulario de editar usuario',
+        ]);
+
+        Permission::create([
+            'name' => 'Editar usuarios',
+            'slug' => 'users.update',
             'description' => 'Editar datos de un usuario en particular',
         ]);
 
@@ -58,8 +70,14 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         Permission::create([
-            'name' => 'Crear rol',
+            'name' => 'Formulario crear rol',
             'slug' => 'roles.create',
+            'description' => 'Ver formulario para crear roles',
+        ]);
+
+        Permission::create([
+            'name' => 'Crear rol',
+            'slug' => 'roles.store',
             'description' => 'Crear un rol dentro del sistema',
         ]);
 
@@ -70,8 +88,14 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         Permission::create([
-            'name' => 'Editar roles',
+            'name' => 'Formulario editar roles',
             'slug' => 'roles.edit',
+            'description' => 'Ver formulario de editar roles',
+        ]);
+
+        Permission::create([
+            'name' => 'Editar roles',
+            'slug' => 'roles.update',
             'description' => 'Editar datos de un rol en particular',
         ]);
 
@@ -89,8 +113,14 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         Permission::create([
-            'name' => 'Crear permiso',
+            'name' => 'Formulario crear permiso',
             'slug' => 'permissions.create',
+            'description' => 'Ver formulario para crear un permiso',
+        ]);
+
+        Permission::create([
+            'name' => 'Crear permiso',
+            'slug' => 'permissions.store',
             'description' => 'Crear un permiso dentro del sistema',
         ]);
 
@@ -101,8 +131,14 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         Permission::create([
-            'name' => 'Editar permisos',
+            'name' => 'Formulario editar permisos',
             'slug' => 'permissions.edit',
+            'description' => 'Ver formulario para editar un permiso',
+        ]);
+
+        Permission::create([
+            'name' => 'Editar permisos',
+            'slug' => 'permissions.update',
             'description' => 'Editar datos de un permiso en particular',
         ]);
 
