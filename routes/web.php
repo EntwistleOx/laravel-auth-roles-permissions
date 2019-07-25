@@ -29,8 +29,10 @@ Route::group(['middleware' => ['auth']], function () {
     # Route::get('users/{user}', 'UserController@show')->name('users.show')->middleware('can:users.show');
     Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit')->middleware('can:users.edit');
     Route::patch('users/{user}', 'UserController@update')->name('users.update')->middleware('can:users.update');
-    Route::patch('users/{user}/password', 'UserController@updatePassword')->name('users.password')->middleware('can:users.update');;
     Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy')->middleware('can:users.destroy');
+
+    # Update user password
+    Route::patch('password/{user}', 'UpdatePasswordController@update')->name('password')->middleware('can:users.update');
 
     # Roles
     Route::get('roles', 'RoleController@index')->name('roles.index')->middleware('can:roles.index');
@@ -40,6 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('roles/{role}/edit', 'RoleController@edit')->name('roles.edit')->middleware('can:roles.edit');
     Route::patch('roles/{role}', 'RoleController@update')->name('roles.update')->middleware('can:roles.update');
     Route::delete('roles/{role}', 'RoleController@destroy')->name('roles.destroy')->middleware('can:roles.destroy');
+
 
     # Permissions
     Route::get('permissions', 'PermissionController@index')->name('permissions.index')->middleware('can:permissions.index');
