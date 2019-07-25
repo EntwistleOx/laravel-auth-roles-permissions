@@ -245,14 +245,14 @@ class UserTest extends TestCase
     public function a_user_password_may_be_updated_only_by_auth_user_with_proper_access()
     {
         #$this->withoutExceptionHandling();
-        $this->assignRoleAndPermissionToSignedUser('users.update');
+        $admin = $this->assignRoleAndPermissionToSignedUser('users.update');
         $user = factory(User::class)->create();
         $newPassword = 'changed';
         $attributes = [
             'password' => $newPassword,
             'password_confirmation' => $newPassword
         ];
-        $this->patch('users/'.$user->id.'/password', $attributes);
+        $this->patch('password/'.$user->id, $attributes);
         $this->assertTrue(\Hash::check($newPassword, $user->fresh()->password));
     }
 
@@ -267,7 +267,7 @@ class UserTest extends TestCase
             'password' => $newPassword,
             'password_confirmation' => $newPassword
         ];
-        $this->patch('users/'.$user->id.'/password', $attributes)
+        $this->patch('password/'.$user->id, $attributes)
              ->assertStatus(403);
     }
 }

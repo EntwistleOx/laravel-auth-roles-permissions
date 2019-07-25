@@ -114,17 +114,4 @@ class UserController extends Controller
         ]);
         return $attributes;
     }
-
-    public function updatePassword(Request $request, User $user)
-    {
-        $attributes = $request->validate([
-            'password' => 'required|confirmed'
-        ]);
-
-        $user->update([
-            'password' => Hash::make($request->password)
-        ]);
-
-        return redirect()->route('users.edit', $user->id)->with('status', 'Password actualizada!');
-    }
 }

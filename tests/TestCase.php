@@ -17,7 +17,7 @@ abstract class TestCase extends BaseTestCase
         return $user;
     }
 
-    protected function assignRoleAndPermissionToSignedUser($permission){
+    protected function assignRoleAndPermissionToSignedUser($permission = null){
         # Signed user
         $user = $this->signIn();
 
