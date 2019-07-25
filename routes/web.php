@@ -18,9 +18,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 #Routes
 Route::group(['middleware' => ['auth']], function () {
 
-Route::get('/', function () {
-    return view('home');
-});
+    Route::get('/', function () {
+        return view('home');
+    });
 
     # Users
     Route::get('users', 'UserController@index')->name('users.index')->middleware('can:users.index');
