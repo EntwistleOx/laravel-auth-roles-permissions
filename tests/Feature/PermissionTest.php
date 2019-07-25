@@ -10,16 +10,14 @@ use Caffeinated\Shinobi\Models\Permission;
 class PermissionTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
-    #use WithoutMiddleware;
 
     /** @test */
-    public function auth_user_can_list_all_permissions()
+    public function only_auth_user_with_proper_access_can_list_all_permissions()
     {
-        $this->withoutExceptionHandling();
-        $user = $this->signIn();
-
+        #$this->withoutExceptionHandling();
+        $user = $this->assignRoleAndPermissionToSignedUser('permissions.index');
+        $this->assertTrue($user->hasPermissionTo(['permissions.index']));
         $permission = factory(Permission::class)->create();
-
         $this->get(route('permissions.index'))
              ->assertOk()
              ->assertSee($permission->name)
@@ -28,39 +26,69 @@ class PermissionTest extends TestCase
     }
 
     /** @test */
-    public function auth_user_can_see_permissions_create_form()
+    public function auth_user_cannot_list_all_permissions()
     {
+        #$this->withoutExceptionHandling();
         $this->signIn();
+        $permission = factory(Permission::class)->create();
+        $this->get(route('permissions.index'))
+             ->assertStatus(403);
+    }
 
+    /** @test */
+    public function only_auth_user_with_proper_access_can_see_permissions_create_form()
+    {
+        $user = $this->assignRoleAndPermissionToSignedUser('permissions.create');
+        $this->assertTrue($user->hasPermissionTo(['permissions.create']));
         $this->get(route('permissions.create'))
              ->assertOk()
              ->assertSee('Crear');
     }
 
     /** @test */
-    public function auth_user_can_create_a_permission()
+    public function auth_user_cannot_see_permissions_create_form()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
+        $this->get(route('permissions.create'))
+             ->assertStatus(403);
+    }
 
+    /** @test */
+    public function only_auth_user_with_proper_access_can_create_a_permission()
+    {
+        #$this->withoutExceptionHandling();
+        $user = $this->assignRoleAndPermissionToSignedUser('permissions.store');
+        $this->assertTrue($user->hasPermissionTo(['permissions.store']));
         $attributes = [
             'name' => $this->faker->word,
             'slug' => $this->faker->slug,
             'description' => $this->faker->sentence
         ];
-
-        $this->post('permissions', $attributes);
-
+        $this->post('permissions/store', $attributes);
         $count = Permission::all()->count();
-        $this->assertEquals(1,$count);
+        $this->assertEquals(2,$count);
         $this->assertDatabaseHas('permissions', $attributes);
     }
 
     /** @test */
-    public function auth_user_can_see_permissions_edit_form()
+    public function auth_user_cannot_create_a_permission()
     {
+        #$this->withoutExceptionHandling();
         $this->signIn();
+        $attributes = [
+            'name' => $this->faker->word,
+            'slug' => $this->faker->slug,
+            'description' => $this->faker->sentence
+        ];
+        $this->post('permissions/store', $attributes)
+             ->assertStatus(403);
+    }
+
+    /** @test */
+    public function only_auth_user_with_proper_access_can_see_permissions_edit_form()
+    {
+        $user = $this->assignRoleAndPermissionToSignedUser('permissions.edit');
+        $this->assertTrue($user->hasPermissionTo(['permissions.edit']));
         $permission = factory(Permission::class)->create();
         $this->get(route('permissions.edit',$permission->id))
                 ->assertOk()
@@ -68,55 +96,88 @@ class PermissionTest extends TestCase
     }
 
     /** @test */
-    public function auth_user_can_update_a_permission()
+    public function auth_user_cannot_see_permissions_edit_form()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
-
         $permission = factory(Permission::class)->create();
+        $this->get(route('permissions.edit',$permission->id))
+             ->assertStatus(403);
+    }
 
+    /** @test */
+    public function only_auth_user_with_proper_access_can_update_a_permission()
+    {
+        #$this->withoutExceptionHandling();
+        $user = $this->assignRoleAndPermissionToSignedUser('permissions.update');
+        $this->assertTrue($user->hasPermissionTo(['permissions.update']));
+        $permission = factory(Permission::class)->create();
         $attributes = [
             'name' => 'changed',
             'slug' => 'changed',
             'description' => 'changed'
         ];
-
         $this->patch('permissions/'.$permission->id, $attributes);
-
         $this->assertDatabaseHas('permissions', $attributes);
     }
 
     /** @test */
-    public function auth_user_can_delete_a_permission()
+    public function auth_user_cannot_update_a_permission()
     {
+        #$this->withoutExceptionHandling();
         $this->signIn();
+        $permission = factory(Permission::class)->create();
+        $attributes = [
+            'name' => 'changed',
+            'slug' => 'changed',
+            'description' => 'changed'
+        ];
+        $this->patch('permissions/'.$permission->id, $attributes)
+             ->assertStatus(403);
+    }
+
+    /** @test */
+    public function only_auth_user_with_proper_access_can_delete_a_permission()
+    {
+        #$this->withoutExceptionHandling();
+        $user = $this->assignRoleAndPermissionToSignedUser('permissions.destroy');
+        $this->assertTrue($user->hasPermissionTo(['permissions.destroy']));
         $permission = factory(Permission::class)->create();
         $this->delete('permissions/'.$permission->id);
         $this->assertDatabaseMissing('permissions',['id'=> $permission->id]);
     }
 
     /** @test */
+    public function auth_user_cannot_delete_a_permission()
+    {
+        #$this->withoutExceptionHandling();
+        $this->signIn();
+        $permission = factory(Permission::class)->create();
+        $this->delete('permissions/'.$permission->id)
+             ->assertStatus(403);
+    }
+
+    /** @test */
     public function a_permission_requires_a_name()
     {
-        $this->signIn();
+        #$this->withoutExceptionHandling();
+        $this->assignRoleAndPermissionToSignedUser('permissions.store');
         $attributes = factory(Permission::class)->raw(['name' => '']);
-        $this->post('/permissions', $attributes)->assertSessionHasErrors('name');
+        $this->post('/permissions/store', $attributes)->assertSessionHasErrors('name');
     }
 
     /** @test */
     public function a_permission_requires_a_slug()
     {
-        $this->signIn();
+        $this->assignRoleAndPermissionToSignedUser('permissions.store');
         $attributes = factory(Permission::class)->raw(['slug' => '']);
-        $this->post('/permissions', $attributes)->assertSessionHasErrors('slug');
+        $this->post('/permissions/store', $attributes)->assertSessionHasErrors('slug');
     }
 
     /** @test */
     public function a_permission_requires_a_description()
     {
-        $this->signIn();
+        $this->assignRoleAndPermissionToSignedUser('permissions.store');
         $attributes = factory(Permission::class)->raw(['description' => '']);
-        $this->post('/permissions', $attributes)->assertSessionHasErrors('description');
+        $this->post('/permissions/store', $attributes)->assertSessionHasErrors('description');
     }
 }

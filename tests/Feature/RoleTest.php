@@ -29,6 +29,16 @@ class RoleTest extends TestCase
     }
 
     /** @test */
+    public function auth_user_cannot_list_all_roles()
+    {
+        #$this->withoutExceptionHandling();
+        $this->signIn();
+        $roles = factory(Role::class)->create();
+        $this->get(route('roles.index'))
+             ->assertStatus(403);
+    }
+
+    /** @test */
     public function only_auth_user_with_proper_access_can_see_roles_create_form()
     {
         $user = $this->assignRoleAndPermissionToSignedUser('roles.create');
@@ -36,6 +46,14 @@ class RoleTest extends TestCase
         $this->get(route('roles.create'))
              ->assertOk()
              ->assertSee('Crear');
+    }
+
+    /** @test */
+    public function auth_user_cannot_see_roles_create_form()
+    {
+        $this->signIn();
+        $this->get(route('roles.create'))
+             ->assertStatus(403);
     }
 
     /** @test */
@@ -57,6 +75,21 @@ class RoleTest extends TestCase
     }
 
     /** @test */
+    public function auth_user_cannot_create_a_role()
+    {
+        #$this->withoutExceptionHandling();
+        $this->signIn();
+        $attributes = [
+            'name' => $this->faker->word,
+            'slug' => $this->faker->slug,
+            'description' => $this->faker->sentence,
+            'special' => null
+        ];
+        $this->post('roles/store', $attributes)
+             ->assertStatus(403);
+    }
+
+    /** @test */
     public function only_auth_user_with_proper_access_can_see_roles_edit_form()
     {
         $user = $this->assignRoleAndPermissionToSignedUser('roles.edit');
@@ -72,10 +105,20 @@ class RoleTest extends TestCase
     }
 
     /** @test */
+    public function auth_user_cannot_see_roles_edit_form()
+    {
+        $this->signIn();
+        $role = factory(Role::class)->create();
+        $permission = factory(Permission::class)->create();
+        $role->syncPermissions($permission->slug);
+        $this->get(route('roles.edit',$role->id))
+             ->assertStatus(403);
+    }
+
+    /** @test */
     public function only_auth_user_with_proper_access_can_update_a_role()
     {
         #$this->withoutExceptionHandling();
-
         $user = $this->assignRoleAndPermissionToSignedUser('roles.update');
         $this->assertTrue($user->hasPermissionTo(['roles.update']));
         $role = factory(Role::class)->create();
@@ -86,6 +129,21 @@ class RoleTest extends TestCase
         ];
         $this->patch('roles/'.$role->id, $attributes);
         $this->assertDatabaseHas('roles', $attributes);
+    }
+
+    /** @test */
+    public function auth_user_cannot_update_a_role()
+    {
+        #$this->withoutExceptionHandling();
+        $this->signIn();
+        $role = factory(Role::class)->create();
+        $attributes = [
+            'name' => 'changed',
+            'slug' => 'changed',
+            'description' => 'changed',
+        ];
+        $this->patch('roles/'.$role->id, $attributes)
+             ->assertStatus(403);
     }
 
     /** @test */
@@ -107,6 +165,23 @@ class RoleTest extends TestCase
     }
 
     /** @test */
+    public function auth_user_cannot_assign_permissions_to_a_rol()
+    {
+        #$this->withoutExceptionHandling();
+        $this->signIn();
+        $role = factory(Role::class)->create();
+        $permission = factory(Permission::class)->create();
+        $attributes = [
+            'name' => $role->name,
+            'slug' => $role->name,
+            'description' => $role->description,
+            'permission' => $permission->slug
+        ];
+        $this->patch('roles/'.$role->id, $attributes)
+             ->assertStatus(403);
+    }
+
+    /** @test */
     public function only_auth_user_with_proper_access_can_delete_a_role()
     {
         $user = $this->assignRoleAndPermissionToSignedUser('roles.destroy');
@@ -114,6 +189,15 @@ class RoleTest extends TestCase
         $role = factory(Role::class)->create();
         $this->delete('roles/'.$role->id);
         $this->assertDatabaseMissing('roles',['id'=> $role->id]);
+    }
+
+    /** @test */
+    public function auth_user_cannot_delete_a_role()
+    {
+        $this->signIn();
+        $role = factory(Role::class)->create();
+        $this->delete('roles/'.$role->id)
+             ->assertStatus(403);
     }
 
     /** @test */
