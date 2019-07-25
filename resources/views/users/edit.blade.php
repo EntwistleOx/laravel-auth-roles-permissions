@@ -66,7 +66,7 @@
         </div>
         <!-- /.box-header -->
 
-        <form method="POST" action="{{ route('users.password', $user->id) }}">
+        <form method="POST" action="{{ route('password', $user->id) }}">
             <div class="box-body">
                 @csrf
                 @method('PATCH')
