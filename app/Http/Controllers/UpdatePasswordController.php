@@ -9,7 +9,6 @@ use App\Http\Requests\UpdatePasswordRequest;
 
 class UpdatePasswordController extends Controller
 {
-
     public function update(UpdatePasswordRequest $request, User $user)
     {
         $user->update([

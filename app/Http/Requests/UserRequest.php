@@ -27,7 +27,6 @@ class UserRequest extends FormRequest
             'name' => 'required',
             'username' => 'required|unique:users',
             'password'=> 'required'
-
         ];
     }
 }

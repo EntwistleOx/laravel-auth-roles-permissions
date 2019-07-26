@@ -69,7 +69,7 @@
         <form method="POST" action="{{ route('password', $user->id) }}">
             <div class="box-body">
 
-                @include('common.errors')
+                @include('common.errors', ['bag' => 'updatePassword'])
                 @include('common.confirmation', ['flag' => 'status-password'])
 
                 @csrf
