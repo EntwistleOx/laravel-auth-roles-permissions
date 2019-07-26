@@ -272,4 +272,13 @@ class UserTest extends TestCase
         $this->patch('password/'.$user->id, $attributes)
              ->assertStatus(403);
     }
+
+    /** @test */
+    public function the_username_must_be_unique()
+    {
+        $this->assignRoleAndPermissionToSignedUser('users.store');
+        $john = factory(User::class)->create();
+        $attributes = factory(User::class)->raw(['username' => $john->username]);
+        $this->post('/users/store', $attributes)->assertSessionHasErrors('username');
+    }
 }
