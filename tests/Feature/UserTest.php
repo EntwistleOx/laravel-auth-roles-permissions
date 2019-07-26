@@ -290,4 +290,31 @@ class UserTest extends TestCase
         $this->assertDatabaseHas('users',['id'=> $admin->id]);
     }
 
+    /** @test */
+    public function a_user_cannot_be_deleted_by_same_user()
+    {
+        #$this->withoutExceptionHandling();
+        $user = $this->signIn();
+
+        # Role
+        $role = Role::create([
+            'name' => 'admin',
+            'slug' => 'admin',
+            'special' => null
+        ]);
+
+        # Permmision
+        Permission::create([
+            'name' => 'users.destroy',
+            'slug' => 'users.destroy',
+        ]);
+
+        # assing role to user and permission to role
+        $user->syncRoles('admin');
+        $role->syncPermissions('users.destroy');
+
+        $this->delete('users/'.$user->id);
+        $this->assertDatabaseHas('users',['id'=> $user->id]);
+    }
+
 }

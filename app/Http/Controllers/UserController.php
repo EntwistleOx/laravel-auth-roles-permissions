@@ -100,9 +100,14 @@ class UserController extends Controller
     {
         if($user->hasRole('superadmin')){
             return redirect()->route('users.index')->withErrors('No se puede eliminar al Superadmin', 'error');
-        }else {
-            $user->delete();
-            return redirect()->route('users.index')->with('status', 'Usuario eliminado!');
         }
+
+        if(auth()->user()->id == $user->id){
+            return redirect()->route('users.index')->withErrors('No te puedes eliminar a ti mismo', 'error');
+        }
+
+        $user->delete();
+        return redirect()->route('users.index')->with('status', 'Usuario eliminado!');
+
     }
 }
