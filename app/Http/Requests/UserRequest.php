@@ -23,16 +23,11 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
+        return [
             'name' => 'required',
             'username' => 'required|unique:users',
+            'password'=> 'required'
+
         ];
-
-        if (!$this->has('id'))
-        {
-            $rules += ['password'=> 'required'];
-        }
-
-        return $rules;
     }
 }

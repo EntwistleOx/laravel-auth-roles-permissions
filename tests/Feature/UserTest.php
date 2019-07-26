@@ -63,7 +63,7 @@ class UserTest extends TestCase
     /** @test */
     public function only_auth_user_with_proper_access_can_store_an_user()
     {
-        $this->withoutExceptionHandling();
+        #$this->withoutExceptionHandling();
         $user = $this->assignRoleAndPermissionToSignedUser('users.store');
         $this->assertTrue($user->hasPermissionTo(['users.store']));
         $name = $this->faker->firstName . ' ' . $this->faker->lastName;
@@ -77,7 +77,9 @@ class UserTest extends TestCase
             'username' => $username,
             'password' => 'password' // password
         ];
+
         $this->post('users/store', $attributes);
+
         $count = User::all()->count();
         $this->assertEquals(2,$count);
         $data = [
@@ -131,7 +133,7 @@ class UserTest extends TestCase
     /** @test */
     public function only_auth_user_with_proper_access_can_update_an_user()
     {
-        #$this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
         $admin = $this->assignRoleAndPermissionToSignedUser('users.update');
         $user = factory(User::class)->create();
         $attributes = [
@@ -173,6 +175,7 @@ class UserTest extends TestCase
             'username' => $user->username,
             'role' => $role->slug,
         ];
+
         $this->patch('users/'.$user->id, $attributes);
         $this->assertTrue($admin->hasPermissionTo(['users.update']));
         $this->assertTrue($user->hasRole($role->slug));

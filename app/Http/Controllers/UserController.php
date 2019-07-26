@@ -44,8 +44,9 @@ class UserController extends Controller
         #$user->username = $request->username;
         #$user->password = Hash::make($request->password);
         #$user->save();
+        #dd($request);
         $request['password'] = Hash::make($request->password);
-        $user = User::create($request->toArray());
+        $user = User::create($request->all());
         return redirect()->route('users.edit', $user->id)->with('status', 'Usuario creado!');
     }
 
@@ -82,12 +83,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $attributes = $request->validate([
-            'name' => 'required',
-            'username' => 'required',
-        ]);
-
-        $user->update($attributes);
+        $user->update($request->except(['role']));
 
         //Asignar Roles
         $user->syncRoles($request->get('role'));
