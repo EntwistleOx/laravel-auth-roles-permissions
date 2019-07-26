@@ -16,6 +16,7 @@
       <!-- Default box -->
       <div class="box">
         @include('common.confirmation', ['flag' => 'status'])
+        @include('common.errors', ['bag' => 'error'])
         <div class="box-header with-border">
           <h3 class="box-title">Lista de Usuarios</h3>
 

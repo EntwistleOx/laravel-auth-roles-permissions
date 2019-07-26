@@ -98,7 +98,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
-        return redirect()->route('users.index')->with('status', 'Usuario eliminado!');
+        if($user->hasRole('superadmin')){
+            return redirect()->route('users.index')->withErrors('No se puede eliminar al Superadmin', 'error');
+        }else {
+            $user->delete();
+            return redirect()->route('users.index')->with('status', 'Usuario eliminado!');
+        }
     }
 }

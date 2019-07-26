@@ -281,4 +281,13 @@ class UserTest extends TestCase
         $attributes = factory(User::class)->raw(['username' => $john->username]);
         $this->post('/users/store', $attributes)->assertSessionHasErrors('username');
     }
+
+    /** @test */
+    public function superadmin_cannot_be_deleted()
+    {
+        $admin = $this->assignRoleAndPermissionToSignedUser('users.destroy');
+        $this->delete('users/'.$admin->id);
+        $this->assertDatabaseHas('users',['id'=> $admin->id]);
+    }
+
 }

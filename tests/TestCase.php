@@ -23,8 +23,8 @@ abstract class TestCase extends BaseTestCase
 
         # Role with all access
         Role::create([
-            'name' => 'Admin',
-            'slug' => 'admin',
+            'name' => 'SuperAdmin',
+            'slug' => 'superadmin',
             'special' => 'all-access'
         ]);
 
@@ -35,7 +35,7 @@ abstract class TestCase extends BaseTestCase
         ]);
 
         # assing role to auth user
-        $user->syncRoles('admin');
+        $user->syncRoles('superadmin');
 
         return $user;
     }
